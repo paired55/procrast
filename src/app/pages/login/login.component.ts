@@ -6,14 +6,14 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { MatButton, MatButtonModule } from '@angular/material/button';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-login',
   standalone: true,
   imports: [MatButtonModule, ReactiveFormsModule],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.scss',
+  styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent {
   loginForm!: FormGroup;
@@ -27,8 +27,10 @@ export class LoginComponent {
 
   onSubmit() {
     if (this.loginForm.valid) {
+      // Form submission logic goes here
+      console.log('Form Submitted', this.loginForm.value);
     } else {
-      this.loginForm.markAllAsTouched;
+      this.loginForm.markAllAsTouched();
     }
   }
 }
