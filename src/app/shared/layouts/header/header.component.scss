@@ -1,0 +1,23 @@
+.app-header {
+  @apply bg-white shadow py-5 fixed top-0 left-0 w-full z-20;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header-text {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.login-text {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  font-weight: 500;
+  cursor: pointer;
+}
