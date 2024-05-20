@@ -1,5 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { ITodo } from '../../../core/models/todo.model';
+
+export type ITodoType = 'New' | 'In Progress' | 'Done';
+export type ITodoStatus = ['New', 'In Progress', 'Done'];
 
 @Component({
   selector: 'app-todo-card',
@@ -8,4 +12,7 @@ import { RouterModule } from '@angular/router';
   templateUrl: './todo-card.component.html',
   styleUrl: './todo-card.component.scss',
 })
-export class TodoCardComponent {}
+export class TodoCardComponent {
+  @Input() type: ITodoType = 'New';
+  @Input() todo!: ITodo;
+}
