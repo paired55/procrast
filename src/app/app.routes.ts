@@ -10,7 +10,6 @@ export const routes: Routes = [
     component: DefaultComponent,
     children: [{ path: '', component: LoginComponent }],
   },
-
   {
     path: '',
     component: MasterComponent,
