@@ -1,12 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   FormBuilder,
-  FormControl,
   FormGroup,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { Router } from '@angular/router';
+import { AuthService } from '../../core/services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -15,20 +16,39 @@ import { MatButtonModule } from '@angular/material/button';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
 
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private router: Router
+  ) {
     this.loginForm = this.fb.group({
-      username: new FormControl('', Validators.required),
-      password: new FormControl('', Validators.required),
+      username: ['', Validators.required],
+      password: ['', Validators.required],
     });
   }
 
-  onSubmit() {
+  ngOnInit(): void {
+    // Check if the user is already logged in
+    if (this.authService.isLoggedIn) {
+      // Redirect to the todo page or any other appropriate page
+      this.router.navigate(['/todo']);
+    }
+  }
+
+  onSubmit(): void {
     if (this.loginForm.valid) {
-      // Form submission logic goes here
-      console.log('Form Submitted', this.loginForm.value);
+      const { username, password } = this.loginForm.value;
+      const isLoggedIn = this.authService.login(username, password);
+      if (isLoggedIn) {
+        // Redirect to the todo page
+        this.router.navigate(['/todo']);
+      } else {
+        // Display an error message
+        alert('Invalid username or password');
+      }
     } else {
       this.loginForm.markAllAsTouched();
     }

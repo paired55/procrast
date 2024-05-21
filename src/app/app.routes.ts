@@ -3,6 +3,7 @@ import { DefaultComponent } from './shared/layouts/default/default.component';
 import { LoginComponent } from './pages/login/login.component';
 import { MasterComponent } from './shared/layouts/master/master.component';
 import { TodoComponent } from './pages/todo/todo.component';
+import { AuthGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
   {
@@ -13,6 +14,8 @@ export const routes: Routes = [
   {
     path: '',
     component: MasterComponent,
-    children: [{ path: 'todo', component: TodoComponent }],
+    children: [
+      { path: 'todo', component: TodoComponent, canActivate: [AuthGuard] },
+    ],
   },
 ];
