@@ -1,0 +1,22 @@
+.footer-text {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  color: black;
+  padding: 0.5rem;
+  margin: 0;
+}
+
+a {
+  text-decoration: none;
+}
+
+a:hover {
+  color: brown;
+}
+
+@media only screen and (max-width: 768px) {
+  .footer-text {
+    display: none;
+  }
+}
