@@ -14,6 +14,7 @@ import {
   Validators,
   ReactiveFormsModule,
 } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-todo',
@@ -23,6 +24,7 @@ import {
     MatButtonModule,
     SlidePanelComponent,
     ReactiveFormsModule,
+    CommonModule,
   ],
   templateUrl: './todo.component.html',
   styleUrls: ['./todo.component.scss'],
@@ -49,7 +51,12 @@ export class TodoComponent implements OnInit {
     this.todos = this.todoService.getAllTodo();
   }
 
-  openSlidePanel() {
+  openSlidePanel(todo?: ITodo) {
+    if (todo) {
+      this.todoForm.patchValue(todo);
+    } else {
+      this.todoForm.reset();
+    }
     this.isSlidePanelOpen = true;
   }
 
@@ -57,13 +64,22 @@ export class TodoComponent implements OnInit {
     this.isSlidePanelOpen = false;
   }
 
+  deleteTodo(todoId: number) {
+    this.todoService.deleteTodo(todoId);
+    this.getAllTodos();
+  }
+
   onSubmit() {
     if (this.todoForm.valid) {
-      const newTodo = this.todoForm.value;
-      this.todoService.addTodo(newTodo);
+      const updatedTodo = this.todoForm.value;
+      if (updatedTodo.id) {
+        this.todoService.updateTodo(updatedTodo);
+      } else {
+        this.todoService.addTodo(updatedTodo);
+      }
       this.todoForm.reset();
       this.onCloseSlidePanel();
-      this.getAllTodos(); // Refresh the todo list
+      this.getAllTodos();
     } else {
       this.todoForm.markAllAsTouched();
     }

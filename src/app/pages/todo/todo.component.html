@@ -6,11 +6,13 @@
       + Add Todo
     </button>
   </div>
-
   <div class="mt-3 bg-white shadow">
-    @for (item of todos; track $index) {
-    <app-todo-card [todo]="item"></app-todo-card>
-    }
+    <app-todo-card
+      *ngFor="let item of todos"
+      [todo]="item"
+      (editTodoEvent)="openSlidePanel($event)"
+      (deleteTodoEvent)="deleteTodo($event)"
+    ></app-todo-card>
   </div>
 </div>
 
