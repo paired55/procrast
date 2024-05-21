@@ -24,6 +24,7 @@ export class TodoService {
     return this.todos;
   }
 
+  // Push new Todo to Todos array and saving it to localStorage
   addTodo(todo: ITodo) {
     const newTodo = {
       ...todo,
@@ -34,12 +35,12 @@ export class TodoService {
     this._todos.push(newTodo);
     this.saveTodosToLocalStorage();
   }
-
+  // Function for deleting a Todo
   deleteTodo(todoId: number) {
     this._todos = this.todos.filter((todo) => todo.id !== todoId);
     this.saveTodosToLocalStorage();
   }
-
+  // Function for editing a Todo
   updateTodo(updatedTodo: ITodo) {
     const index = this._todos.findIndex((todo) => todo.id === updatedTodo.id);
     if (index !== -1) {
@@ -50,13 +51,14 @@ export class TodoService {
       this.saveTodosToLocalStorage();
     }
   }
-
+  // Generating random ID for each todo
   private generateId(): number {
     return this.todos.length > 0
       ? Math.max(...this.todos.map((todo) => todo.id!)) + 1
       : 1;
   }
 
+  // Saving current Todos to local storage
   private saveTodosToLocalStorage() {
     localStorage.setItem(this.localStorageKey, JSON.stringify(this._todos));
   }

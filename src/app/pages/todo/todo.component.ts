@@ -48,15 +48,18 @@ export class TodoComponent implements OnInit {
     });
   }
 
+  // Call the getAllTodos function at application start
   ngOnInit(): void {
     this.getAllTodos();
   }
 
+  // Set the filter and display Todos
   getAllTodos() {
     this.todos = this.todoService.getAllTodo();
     this.filterTodos(this.activeFilter);
   }
 
+  // Using patchValue to edit an existing Todo
   openSlidePanel(todo?: ITodo) {
     this.isEditMode = !!todo;
     if (todo) {
