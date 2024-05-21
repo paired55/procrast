@@ -12,7 +12,6 @@ import {
   FormGroup,
   FormControl,
   Validators,
-  FormsModule,
   ReactiveFormsModule,
 } from '@angular/forms';
 
@@ -26,13 +25,14 @@ import {
     ReactiveFormsModule,
   ],
   templateUrl: './todo.component.html',
-  styleUrl: './todo.component.scss',
+  styleUrls: ['./todo.component.scss'],
 })
 export class TodoComponent implements OnInit {
   todoForm!: FormGroup;
   todos: ITodo[] = [];
   todoStatus = ITodoStatus;
   isSlidePanelOpen = false;
+
   constructor(private todoService: TodoService, private fb: FormBuilder) {
     this.todoForm = this.fb.group({
       title: new FormControl('', [Validators.required]),
@@ -59,8 +59,13 @@ export class TodoComponent implements OnInit {
 
   onSubmit() {
     if (this.todoForm.valid) {
+      const newTodo = this.todoForm.value;
+      this.todoService.addTodo(newTodo);
+      this.todoForm.reset();
+      this.onCloseSlidePanel();
+      this.getAllTodos(); // Refresh the todo list
     } else {
-      this.todoForm.markAllAsTouched;
+      this.todoForm.markAllAsTouched();
     }
   }
 }
