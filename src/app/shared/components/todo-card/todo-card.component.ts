@@ -3,7 +3,7 @@ import { RouterModule } from '@angular/router';
 import { ITodo } from '../../../core/models/todo.model';
 
 export type ITodoType = 'New' | 'In Progress' | 'Done';
-export type ITodoStatus = ['New', 'In Progress', 'Done'];
+export const ITodoStatus = ['New', 'In Progress', 'Done'];
 
 @Component({
   selector: 'app-todo-card',

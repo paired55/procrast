@@ -1,4 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
+
 import {
   trigger,
   state,
@@ -10,7 +12,7 @@ import {
 @Component({
   selector: 'app-slide-panel',
   standalone: true,
-  imports: [],
+  imports: [MatButtonModule],
   templateUrl: './slide-panel.component.html',
   styleUrl: './slide-panel.component.scss',
   animations: [
