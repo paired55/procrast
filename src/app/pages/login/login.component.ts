@@ -8,6 +8,7 @@ import {
 import { MatButtonModule } from '@angular/material/button';
 import { Router } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-login',
@@ -22,7 +23,8 @@ export class LoginComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private toastr: ToastrService
   ) {
     this.loginForm = this.fb.group({
       username: ['', Validators.required],
@@ -47,7 +49,7 @@ export class LoginComponent implements OnInit {
         this.router.navigate(['/todo']);
       } else {
         // Display an error message
-        alert('Invalid username or password');
+        this.toastr.error('Invalid username or password', 'Login Error');
       }
     } else {
       this.loginForm.markAllAsTouched();

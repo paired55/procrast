@@ -4,6 +4,7 @@
 @tailwind utilities;
 
 @import "./assets/scss/common";
+@import "ngx-toastr/toastr";
 
 body {
   font-family: "Quicksand", sans-serif;

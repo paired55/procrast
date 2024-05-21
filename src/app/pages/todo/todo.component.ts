@@ -16,6 +16,7 @@ import {
 } from '@angular/forms';
 import { ITodoType } from '../../shared/components/todo-card/todo-card.component';
 import { CommonModule } from '@angular/common';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-todo',
@@ -39,7 +40,11 @@ export class TodoComponent implements OnInit {
   activeFilter: ITodoType | 'All' = 'All';
   isEditMode = false;
 
-  constructor(private todoService: TodoService, private fb: FormBuilder) {
+  constructor(
+    private todoService: TodoService,
+    private fb: FormBuilder,
+    private toastr: ToastrService
+  ) {
     this.todoForm = this.fb.group({
       id: new FormControl(null),
       title: new FormControl('', [Validators.required]),
@@ -81,8 +86,10 @@ export class TodoComponent implements OnInit {
       const updatedTodo = this.todoForm.value;
       if (this.isEditMode) {
         this.todoService.updateTodo(updatedTodo);
+        this.toastr.success('Todo updated successfully', 'Todo Updated');
       } else {
         this.todoService.addTodo(updatedTodo);
+        this.toastr.success('Todo added successfully', 'Todo Added');
       }
       this.onCloseSlidePanel();
       this.getAllTodos();
@@ -93,6 +100,7 @@ export class TodoComponent implements OnInit {
 
   deleteTodo(todoId: number) {
     this.todoService.deleteTodo(todoId);
+    this.toastr.warning('Todo deleted successfully', 'Todo Deleted');
     this.getAllTodos();
   }
 
