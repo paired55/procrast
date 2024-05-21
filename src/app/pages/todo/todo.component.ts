@@ -14,6 +14,7 @@ import {
   Validators,
   ReactiveFormsModule,
 } from '@angular/forms';
+import { ITodoType } from '../../shared/components/todo-card/todo-card.component';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -32,11 +33,15 @@ import { CommonModule } from '@angular/common';
 export class TodoComponent implements OnInit {
   todoForm!: FormGroup;
   todos: ITodo[] = [];
+  filteredTodos: ITodo[] = [];
   todoStatus = ITodoStatus;
   isSlidePanelOpen = false;
+  activeFilter: ITodoType | 'All' = 'All';
+  isEditMode = false;
 
   constructor(private todoService: TodoService, private fb: FormBuilder) {
     this.todoForm = this.fb.group({
+      id: new FormControl(null),
       title: new FormControl('', [Validators.required]),
       description: new FormControl('', [Validators.required]),
       status: new FormControl('New', [Validators.required]),
@@ -49,9 +54,11 @@ export class TodoComponent implements OnInit {
 
   getAllTodos() {
     this.todos = this.todoService.getAllTodo();
+    this.filterTodos(this.activeFilter);
   }
 
   openSlidePanel(todo?: ITodo) {
+    this.isEditMode = !!todo;
     if (todo) {
       this.todoForm.patchValue(todo);
     } else {
@@ -62,6 +69,23 @@ export class TodoComponent implements OnInit {
 
   onCloseSlidePanel() {
     this.isSlidePanelOpen = false;
+    this.isEditMode = false;
+    this.todoForm.reset();
+  }
+
+  onSubmit() {
+    if (this.todoForm.valid) {
+      const updatedTodo = this.todoForm.value;
+      if (this.isEditMode) {
+        this.todoService.updateTodo(updatedTodo);
+      } else {
+        this.todoService.addTodo(updatedTodo);
+      }
+      this.onCloseSlidePanel();
+      this.getAllTodos();
+    } else {
+      this.todoForm.markAllAsTouched();
+    }
   }
 
   deleteTodo(todoId: number) {
@@ -69,19 +93,12 @@ export class TodoComponent implements OnInit {
     this.getAllTodos();
   }
 
-  onSubmit() {
-    if (this.todoForm.valid) {
-      const updatedTodo = this.todoForm.value;
-      if (updatedTodo.id) {
-        this.todoService.updateTodo(updatedTodo);
-      } else {
-        this.todoService.addTodo(updatedTodo);
-      }
-      this.todoForm.reset();
-      this.onCloseSlidePanel();
-      this.getAllTodos();
+  filterTodos(filter: ITodoType | 'All') {
+    this.activeFilter = filter;
+    if (filter === 'All') {
+      this.filteredTodos = [...this.todos];
     } else {
-      this.todoForm.markAllAsTouched();
+      this.filteredTodos = this.todos.filter((todo) => todo.status === filter);
     }
   }
 }
